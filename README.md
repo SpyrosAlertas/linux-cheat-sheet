@@ -9,3 +9,4 @@
 6. **cat, less, more, sort, uniq, head, tail, wc**
 7. **env, printenv, export, unset, echo**
 8. **ssh and scp, Putty, WinSCP**
+9. **Create Jar, Add/Update file in Jar, Delete file from Jar, Extract files from Jar, JD-GUI**
