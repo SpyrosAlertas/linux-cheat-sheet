@@ -1,0 +1,661 @@
+\documentclass{article}
+
+\include{structure.tex}
+
+\hypersetup{pdftitle={Linux Cheat Sheet - English}}
+\hypersetup{pdfauthor={Spyros Alertas}}
+\hypersetup{pdfsubject={Linux Cheat Sheet}}
+\hypersetup{pdfkeywords={Linux}}
+
+\title{\bfseries{Linux Cheat Sheet}}
+
+\author{Spyros Alertas}
+
+\date{Created On: September 12, 2023\\Last Edit: \today}
+
+% Hint: \title{whatever}, \author{who cares} and \date{whenever} could stand before or after the \begin{document} command BUT the \maketitle command MUST come AFTER the \begin{document} command!
+
+\lstset{basicstyle=\ttfamily}
+
+\begin{document}
+
+
+% cover page
+\begin{titlingpage}
+\maketitle
+\end{titlingpage}
+
+
+% table of contents
+\tableofcontents
+
+
+% all sections - main document content
+\newpage
+\section{Introduction}
+\paragraph{} This document is a brief introduction to the basics of the linux universe and some of the most common and useful linux programs.\\
+\paragraph{} \textbf{What is Linux?}
+\begin{itemize}
+	\item Linux and Unix are Operating Systems.
+	\item Unix is a proprietary OS developed by AT\&T Labs.
+	\item Linux is an Open Source OS based on Unix developed by Linus Torvald in 1991.
+	\item Unix OS: MacOS, Solaris, EulerOS, etc.
+	\item Linux Distributions: Ubuntu, Debian, Fedora, OpenSuse, Arch Linux, Gentoo. ElementaryOS.
+	\item The heart of Linux is the Kernel.
+\end{itemize}
+\paragraph{} \textbf{What is an Operating System?}
+\begin{itemize}
+	\item The main purpose of an Operating System is to provide a layer for other Software to communicate with the hardware through API (Application Programming Interface).
+	\item Once loaded into a computer, the Operating System manages all other application programs.
+\end{itemize}
+\paragraph{} \textbf{What is the Kernel in Linux?}
+\begin{itemize}
+	\item The main purpose of an Operating System is to provide a layer for other Software to communicate with the hardware through API (Application Programming Interface).
+	\item Once loaded into a computer, the Operating System manages all other application programs.
+	\item The Kernel is the heart of Linux, it is the interface between the hardware and its processes. It is responsible for managing resources as efficiently as possible.
+\end{itemize}
+
+
+\newpage
+\section{Important Linux Commands Summary - In One Page}
+	
+	{\fontsize{8pt}{12pt}\selectfont
+		\begin{tabular}{ c c || c c }
+		\hline
+		\textbf{Command} & \textbf{Description} & \textbf{Command} & \textbf{Description} \\ \hline
+		pwd & Print working directory & env & Print environment variables \\
+		cd & Change directory & export & Create or update environment variable \\
+		ll & List directory contents & unset & Delete environment variable \\
+		mkdir & Create directory & env | grep var & Search for specific environment variable \\
+		rmdir & Delete directory & ssh & Secure Socket Shell - Remote connection \\
+		rm & Delete files or directories & scp & Secure Copy Protocol - File transfer \\
+		chmod & Change file permissions \\
+		grep & Search for pattern in files \\
+		find & Search for files or directories \\
+		cksum & Calculate the checksum of a file & echo & Print arguments to standard output (stdout) \\
+		& \\
+		cat & Display file content & head & Display first N lines only \\
+		less & Display file content in terminal & tail & Display last N lines only \\
+		sort & Display file content sorted \\
+		uniq & Display uniq or duplicate lines only \\
+	\end{tabular}}
+\newline\newline
+
+\noindent\textbf{Important linux tools/terminology:}
+\begin{itemize}
+	\item | : The pipe symbol passes the output of the command on the left as input to the command on the right
+	\item | xargs : The pipe symbol combined with the word xargs will pass the output of the command on the left as argument to the right command
+	\item > and >{}> : Input/Output redirection. Will change input for the command from a file or the output of the command to a file.
+	\item Absolute Path: Starts from root directory and gives full path.
+	\item Relative Path: Starts from current working directory.
+	\item Wildcard * : Matches with zero or more any characters.
+	\item Wildcard ? : Matches exactly one any character.
+\end{itemize}
+\newpage
+
+
+\section{Basic Linux Commands - Paths, Directories, Files and Permissions}
+
+\subsection{Relative vs Absolute Paths}
+\begin{itemize}
+	\item An \textbf{Absolute Path} shows the location of a file or directory from the root path.
+	\item  A \textbf{Relative Path} describes the location of a file or directory from the current location.
+\end{itemize}
+
+\subsection{man, arguments (-{}-help, -{}-version), pwd, which, type, ls, ll, cd, clear, whoami}
+\paragraph{} Some basic Linux commands and basic arguments.\\\newline
+\textbf{man:} Displays the manual page of a program.\\\newline
+\textbf{Example use:}
+\begin{lstlisting}
+spyros@spyros-ubuntu-23:~$ man man
+$ example output: manual page of man program
+
+spyros@spyros-ubuntu-23:~$ man pwd
+$ example output: manual page of pwd program
+\end{lstlisting}
+\textbf{Arguments:} Are options that can be used while running a program to define its behavior.\\
+\textbf{-{}-help or -h: } Displays a help page with info about what the program does and available arguments.\\
+\textbf{-{}-version or -v: } Displays the version of a program.\\\newline
+\textbf{Example use:}
+\begin{lstlisting}
+spyros@spyros-ubuntu-23:~$ man --help
+$ example output: help page of man program
+
+spyros@spyros-ubuntu-23:~$ man --version
+$ example output: man 2.1.12 (version of man program)
+
+spyros@spyros-ubuntu-23:~$ man -h
+$ example output: help page of man program
+
+spyros@spyros-ubuntu-23:~$ man -v
+$ example output: man 2.1.12 (version of man program)
+\end{lstlisting}
+\textbf{pwd:} Print Working Directory\\\newline
+\textbf{Example use:}
+\begin{lstlisting}
+spyros@spyros-ubuntu-23:~$ pwd
+$ example output: /home/spyros (current absolute path you are at)
+\end{lstlisting}
+\textbf{which:} Locate a command.\\\newline
+\textbf{Example use:}
+\begin{lstlisting}
+spyros@spyros-ubuntu-23:~$ which ls
+$ example output: /usr/bin/ls
+
+spyros@spyros-ubuntu-23:~$ which pwd
+$ example output: /usr/bin/pwd
+\end{lstlisting}
+\textbf{type:} Tells if a command is a built-in shell command and where it is located or if it is an alias.\\\newline
+\textbf{Example use:}
+\begin{lstlisting}
+spyros@spyros-ubuntu-23:~$ type mkdir
+$ example output: mkdir is /usr/bin/mkdir
+
+spyros@spyros-ubuntu-23:~$ which cd
+$ example output: cd is a shell builtin
+\end{lstlisting}
+\textbf{ls} and \textbf{ll:} List Directory Contents.\\\newline
+\textbf{Example use:}
+\begin{lstlisting}
+spyros@spyros-ubuntu-23:~$ type ll
+$ example output: ll is aliased to `ls -alF'
+
+spyros@spyros-ubuntu-23:~$ ls
+$ example output: Displays list of  contents of current directory
+
+spyros@spyros-ubuntu-23:~$ ls -a
+$ example output: Include files that start with .
+$ (these are hidden files in Linux)
+
+spyros@spyros-ubuntu-23:~$ ls -l
+$ example output: Display full details: permissions, group, owner,
+$ size and timestamp
+
+spyros@spyros-ubuntu-23:~$ ls -lh
+$ example output: Print sizes like 1K, 234M, 2G, etc. Must be
+$ combined with -l or -s argument
+
+spyros@spyros-ubuntu-23:~$ ls -t
+$ example output: Order by update time
+
+spyros@spyros-ubuntu-23:~$ ls -r
+$ example output: Display directory contents in reverse order
+
+spyros@spyros-ubuntu-23:~$ ls -R
+$ example output: Display directory contents and also the content
+$ of its subdirectories
+
+spyros@spyros-ubuntu-23:~$ ls -S
+$ example output: Display directory contents order by file size -
+$ largest number first
+
+\end{lstlisting}
+\textbf{cd:} Change Directory.\\\newline
+\textbf{Example use:}
+\begin{lstlisting}
+$ Change Directory Using Relative Path
+spyros@spyros-ubuntu-23:~$ cd Downloads/mydir
+$ example output: spyros@spyros-ubuntu-23:~/Downloads/mydir$
+
+$ Change Directory Using Absolute Path
+spyros@spyros-ubuntu-23:~$ cd /home/spyros/Downloads/mydir
+$ example output: spyros@spyros-ubuntu-23:~/Downloads/mydir$
+
+$ Notice the difference between relative and absolute paths
+$ Absolute Paths start with / while relative cannot
+
+$ Parent Directory
+spyros@spyros-ubuntu-23:~$ cd ..
+or
+spyros@spyros-ubuntu-23:~$ cd ../
+
+$ Two Directories Up
+spyros@spyros-ubuntu-23:~$ cd ../../
+$ The / can be omitted only from the end, not in between
+
+\end{lstlisting}
+\textbf{clear:} Will clear all output from current terminal window.\\\newline
+\textbf{Example use:}
+\begin{lstlisting}
+spyros@spyros-ubuntu-23:~$ clear
+
+\end{lstlisting}
+\textbf{whoami:} Will print users effective name.\\\newline
+\textbf{Example use:}
+\begin{lstlisting}
+spyros@spyros-ubuntu-23:~$ whoami
+$ output: spyros
+\end{lstlisting}
+
+\subsection{File/Directory Management and Permissions:\\touch, mkdir, rmdir, rm, chmod}
+\begin{lstlisting}
+$ touch will update access and modification date of file to current time
+$ If file does not exist it will be created
+$ -c: don't create file if it doesn't exist
+$ -a: change only access time
+$ -m: change only modification time
+spyros@spyros-ubuntu-23:~$ touch myfile.txt
+
+spyros@spyros-ubuntu-23:~$ mkdir test
+$ Will create directory test
+
+spyros@spyros-ubuntu-23:~$ mkdir dir1 dir2
+$ Will create two directories with names dir1 and dir2
+
+spyros@spyros-ubuntu-23:~$ rmdir dir1 dir2
+$ Will delete directories dir1 and dir2
+$ Note: rmdir will only delete empty directories, if there are
+$ files it will fail and can delete only directories, not files
+
+$ Command rm can be used to delete both files and directories
+$ -d: will delete empty directory (like rmdir)
+$ -i: prompt before removal
+$ -r or -R: Delete directories and their contents recursively
+spyros@spyros-ubuntu-23:~$ rm -r test
+$ Will delete test directory even if it has files
+
+spyros@spyros-ubuntu-23:~$ rm myfile.txt
+$ Will delete file myfile.txt
+
+$ chmod is used to change permissions to files and directories
+spyros@spyros-ubuntu-23:~$ chmod 755 myfile.txt
+$ Will change permissions of file to 755
+$ Let's understand in next subsection Linux Permissions better
+\end{lstlisting}
+
+\subsection{Linux Permissions - chmod xxx}
+\begin{lstlisting}
+spyros@spyros-ubuntu-23:~$ ls -l
+drwxrwxr-x	 2	spyros	spyros	4096	Sep 15 06:51 album/
+-rw-rw-r--	 1	spyros	spyros	  37	Sep 15 07:23 notes.txt
+
+\end{lstlisting}
+\paragraph{} The first field in above output of ls -l is information about file permissions.
+\begin{itemize}
+	\item File Type: is the first character
+		\subitem `d' is for directory and `-' for normal files
+	\item Permissions: rw-rw-r-{}-
+		\subitem This is actually three sets of permissions
+		\subitem rw- : Owner Permissions - first set
+		\subitem rw- : Group Permissions - second set
+		\subitem r-{}- {} : Others Permissions - third set
+		\subitem Every file in linux belongs to an owner and a group
+		\subitem The characters in above strings show which permissions are granted to user/group/others
+		\subitem `r' stands for read, `w' for write and `x' for execute
+	\item User Owner: spyros
+	\item Group Owner: spyros
+		\subitem Every user in linux belongs to a group and many users can belong to one group
+	\item Others: By others we mean users that don't belong in the same group as the owner of a file or directory
+\end{itemize}
+\paragraph{} With command chmod we set the permissions for each group with octal values (values from 0 to 7).
+\begin{itemize}
+	\item 0: no permissions granted
+	\item 1: only execute permission
+	\item 2: only write permission
+	\item 3: execute and write permissions
+	\item 4: only read permission
+	\item 5: read and execute permissions
+	\item 6: read and write permissions
+	\item 7: all (read, write and execute) permissions
+\end{itemize}
+\begin{lstlisting}
+spyros@spyros-ubuntu-23:~$ chmode 775 test_script.sh
+-rwxrwxr-x	 1	spyros	spyros	  37	Sep 15 07:23 notes.txt
+
+spyros@spyros-ubuntu-23:~$ chmode 664 test_script.sh
+-rw-rw-r--	 1	spyros	spyros	  37	Sep 15 07:23 notes.txt
+
+spyros@spyros-ubuntu-23:~$ chmode 666 test_script.sh
+-rw-rw-rw-	 1	spyros	spyros	  37	Sep 15 07:23 notes.txt
+
+\end{lstlisting}
+
+
+\section{Basic Linux Commands - Checksum, Search files/directories/file content, Pipe and Redirect}
+
+\subsection{Checksum - cksum}
+\begin{lstlisting}
+spyros@spyros-ubuntu-23:~$ cksum file.txt
+$ output: 1078369332	48	file.txt
+
+$ Computes and verifies file checksums
+$ First number is checksum, second is the filesize and
+$ third column is the file name
+
+$ File checksum is very usefull when needed to check if
+$ a file is tampered or not compared to another version
+$ of the same file
+
+\end{lstlisting}
+
+\subsection{Search for files and directories - find}
+\paragraph{} find is a very useful command to search for files and directories.
+\begin{lstlisting}
+spyros@spyros-ubuntu-23:~$ find dirname -type d
+$ output: Find all directories recursively in all
+$ subdirectories that match pattern dirname
+
+spyros@spyros-ubuntu-23:~$ find filename -type f
+$ output: Find all files recursively in all subdirectories
+$ that match pattern filename
+
+spyros@spyros-ubuntu-23:~$ find filename
+$ output: Find all files and directories recursively in all
+$ subdirectories that match pattern filename
+
+\end{lstlisting}
+
+\subsection{Search file content - grep}
+\paragraph{} grep is a very powerful tool that allows you to search in files for patterns.
+grep
+\begin{lstlisting}
+spyros@spyros-ubuntu-23:~$ grep text filename
+$ output: Will print the lines that contain pattern text in
+$ file with name filename
+
+spyros@spyros-ubuntu-23:~$ grep text *
+$ output: Will print the lines and filenames that contain pattern text
+$ * means search in all files in current directory
+
+$ Useful options:
+$ -i : ignore case (lower or upper case)
+$ -v : invert the sense of matching
+
+$ -o : Print only matching part of the line, not the whole line
+$ -n : Print also the number of line that pattern is found at
+
+$ -c : count the number of lines that contain the pattern
+
+$ -l : Print only filenames in which matches are found
+$ -L : Print only filenames in which matches are not found
+
+$ -r : Search in all files even in sub-directories, doesn't follow
+$ symbolic links unless they are on the command line
+$ -R : Same as -r but will follow symbolic links also
+
+\end{lstlisting}
+
+\subsection{Pipe}
+\paragraph{} In Linux we can pipe the output of one command as \underline{input stream} to another using this symbol |. A pipe passes the standard output from one command as input stream to another command.
+
+\begin{lstlisting}
+	spyros@spyros-ubuntu-23:~$ commandA | commandB
+
+\end{lstlisting}
+
+\subsection{Pipe with xargs}
+\paragraph{} In Linux we can pipe the output of one command as \underline{argument} to another using this symbol | xargs. A pipe combined with xargs will pass the standard output from one command as argument to another command.
+
+\begin{lstlisting}
+	spyros@spyros-ubuntu-23:~$ commandA | xargs commandB
+
+\end{lstlisting}
+
+\subsection{Redirect}
+\paragraph{} In Linux we can redirect the output of one command to a file. We can do it using the symbols > or >{}>.\\> Will create the file if it doesn't exist but will overwrite any content if it's existing file.\\>{}> Will create the file if it doesn't exist but will append at the end of the file the new content, without over writing previous content.\\It can also be used to pass a file as input stream to a command.
+\begin{lstlisting}
+spyros@spyros-ubuntu-23:~$ ls -l > output.txt
+
+spyros@spyros-ubuntu-23:~$ ls -l >> output.txt
+
+spyros@spyros-ubuntu-23:~$ input.txt > command
+
+\end{lstlisting}
+
+\subsection{Pipe vs Pipe with xargs vs Redirect}
+\paragraph{} These three tools may seems similar at first but they are very different. In short:\\
+\begin{itemize}
+	\item Pipe | (commandA | commandB) :  output of commandA will be passed as input stream to commandB.
+	\item Pipe with xargs | xargs (commandA | xargs commandB) : output of commandA will be passed as argument to commandB.
+	\item Redirect > or >{}> (commandA > output-file) or (input-file > commandB) : Output of commandA will be redirected to output-file instead of terminal and input for commandB will be redirected to input-file instead of terminal input.
+\end{itemize}
+
+\section{Environment Variables - env, echo, export, unset}
+\begin{lstlisting}
+spyros@spyros-ubuntu-23:~$ env
+spyros@spyros-ubuntu-23:~$ printenv
+$ These two commands will print all environment variables
+
+spyros@spyros-ubuntu-23:~$ env | grep SESSION
+$ This command will print all environment variables that contain SESSION
+
+$ This symbol | is called pipe and it passes the output
+$ of the command on the left (in this case env) to the
+$ command on the right (here grep SESSION)
+
+spyros@spyros-ubuntu-23:~$ echo $GDMSESSION
+$ Echo prints the output of its argument, in this case the value of the
+$ environment variable GDMSESSION
+
+spyros@spyros-ubuntu-23:~$ echo Hello Linux World!
+$ output: Hello Linux World!
+
+# export name=value
+spyros@spyros-ubuntu-23:~$ export myvar="This is my first environment variable"
+$ This will create a new or update the value of an existing environment variable
+spyros@spyros-ubuntu-23:~$ echo $myvar
+# Will print the value of new env variable
+
+spyros@spyros-ubuntu-23:~$ unset myvar
+# Will delete environment variable if it exists
+spyros@spyros-ubuntu-23:~$ echo $myvar
+# Empty line will be printed after unsetting environment variable
+
+\end{lstlisting}
+
+
+\section{Remote Connect To Linux Machines}
+
+\subsection{ssh and scp}
+\paragraph{} \textbf{ssh} stands for \textbf{Secure Shell} or \textbf{Secure Socket Shell} and it's a protocol that allows secure connection to remote Linux machines through text based user interface.\\\textbf{Purpose:} Securely connect to remote Linux and run commands. Cannot transfer files from one Linux to another.
+\paragraph{} \textbf{scp} stands for \textbf{Secure Copy Protocol} and it's a file transfer protocol. scp is using ssh for data transfer and security.\\\textbf{Purpose:} Securely copy files from one Linux machine to another. Cannot run other Linux commands.
+\begin{lstlisting}
+spyros@spyros-ubuntu-23:~$ ssh user@host
+$ The above will request password if required and after
+$ will connect to remote Linux.
+
+spyros@spyros-ubuntu-23:~$ scp source user@host:source/filepath
+$ The above will copy source file or directory on location
+given after user@host: path to the place where you are running
+$ scp command from
+
+$ -p: argument can be passed with port if we don't want 
+$ default port to be used
+\end{lstlisting}
+
+\subsection{Putty and WinSCP}
+\paragraph{} \textbf{Putty} is a terminal emulator that supports ssh protocol.
+\paragraph{} \textbf{WinSCP} is a Windows GUI that uses \textbf{SFTP - Secure File Transfer Protocol} and allows to securely transfer files from remote Linux machines.
+\begin{itemize}
+	\item \href{https://www.putty.org/}{Putty - Official Site}
+	\item \href{https://winscp.net/eng/index.php}{WinSCP - Official Site}
+\end{itemize}
+
+
+\section{More Linux Commands - wc, cat, less, more, sort, uniq, head, tail}
+\begin{lstlisting}
+spyros@spyros-ubuntu-23:~$ ls -l pattern | wc -l
+$ output: ls -l will find the files matching pattern
+$ then wc -l will count the lines (the number of files)
+
+$ -c : byte counts
+$ -m : character counts
+$ -l : line counts
+$ -L : length of longest line
+$ -w : word counts
+
+spyros@spyros-ubuntu-23:~$ cat filename
+$ output: will display the whole file content at once
+
+spyros@spyros-ubuntu-23:~$ less filename
+spyros@spyros-ubuntu-23:~$ more filename
+$ output: will display file content in pages
+$ less is better than more, especially for big files,
+$ as it doesn't load the entire file at once
+
+spyros@spyros-ubuntu-23:~$ sort filename
+$ output: will display file content sorted in ascending alphabetical order
+
+$ Default sorting is ascending
+$ -r : reverse order (descending)
+$ -R : random sort
+$ -u : unique values only
+
+$ Note: uniq considers repeated lines only if they are consecutive,
+$ so it's a good idea to first use command sort
+spyros@spyros-ubuntu-23:~$ sort filename | uniq -c
+$ will prefix lines by the number of occurences
+
+$ -d : will only display duplicate lines (only once)
+$ -D : will display only duplicate lines (as many times as they occur)
+
+$ -u : Only display unique lines
+
+$ -w : compare only N characters, not the whole line
+
+spyros@spyros-ubuntu-23:~$ head -n 2 filename
+$ Display only first 2 lines
+
+spyros@spyros-ubuntu-23:~$ tail -n 2 filename
+$ Display only last 2 lines
+
+\end{lstlisting}
+
+
+\section{Advanced Linux Commands - Combination of commands}
+
+\subsection{Extract content of certain xml tags}
+\paragraph{} In certain cases you may have large xml files but you need all the values of one certain xml tag only. Below command can extract the distinct values of a certain xml tag.
+\begin{lstlisting}
+	spyros@spyros-ubuntu-23:~$ grep -hr "<xmltag" filename |
+	sed -e 's/<[^>]*>//g' | awk '$1 = $1' | uniq -u |
+	awk '$0="\047"$0"\047"' | sed -z 's/\n/,/g;s/,$/\n/'
+\end{lstlisting}
+
+\paragraph{} Above command explained part by part.
+\begin{itemize}
+	\item grep -hr "<xmltag" filename
+		\subitem Finds all lines that contain the text <id. Change id as required
+	\item sed -e \ \textquotesingle{}s/<[\^{}>]*>//g\textquotesingle
+		\subitem Removes all xml tags and keeps only its content
+	\item awk \textquotesingle \textdollar1 = \textdollar1\textquotesingle
+		\subitem Remove trailing white spaces
+	\item uniq -u (alternatively $\underline{sort -u}$ can achieve the same result but also sort content)
+		\subitem Removes duplicate lines from output
+	\item awk \textquotesingle\textdollar0=\textquotedbl$\backslash$047\textquotedbl\textdollar0\textquotedbl$\backslash$047\textquotedbl\textquotesingle
+		\subitem Append as prefix and post-fix symbol \textquotesingle.
+	\item sed -z \textquotesingle s/$\backslash$n/,/g;s/,\textdollar/$\backslash$n/\textquotesingle
+		\subitem Change lines to a comma separated list
+\end{itemize}
+
+\subsection{Find start and end line and copy in between content to new file}
+\paragraph{} This command will search for first and second string, will keep their line numbers and after it will copy all content in between these two lines to a new file.
+\begin{lstlisting}
+	spyros@spyros-ubuntu-23:~$ grep -n "starttext\|endtext" filename |
+	cut -f1 -d : | head -2 | sed -z 's/\n/,/g;s/,$/\n/' |
+	xargs -I {} sed -n '{}p' filename > outputfilename
+
+\end{lstlisting}
+\paragraph{} Above command explained part by part.
+\begin{itemize}
+	\item grep -n \textquotedbl starttext$\backslash$|endtext\textquotedbl{} filename
+		\subitem Finds the lines where starttext or endtext exists.
+	\item cut -f1 -d :
+		\subitem Deletes everything after the line number
+	\item head -2
+		\subitem Keeps only the first two results. Just in case they exist more than once
+	\item sed -z \textquotesingle s/$\backslash$n/,/g;s/,\textdollar/$\backslash$n/'
+		\subitem Change lines to a comma separated list
+	\item xargs -I {} sed -n \textquotesingle \{\}p\textquotesingle{} filename > outputfilename
+		\subitem Will copy from file filename to outputfilename all lines that are passed as argument. -I {} tells xargs to replace {} with the output of the previous command.
+		\subitem Note: If you use symbol > it will delete file if it exists and recreate it only with this content. If you change > to >{}> it will create the file if it does not exist or will append to the end of it, if it already exists.
+\end{itemize}
+
+
+\section{Java - jar commands}
+
+\subsection{What are jar files}
+\paragraph{} jar file are used to bundle class files, metadata and resources into one file for distribution. They follow the zip format.
+
+\subsection{Create jar}
+\begin{lstlisting}
+spyros@spyros-ubuntu-23:~$ jar -cvf jarname.jar myfolderforjar
+$ Above command will create a jar with name jarname.jar and
+$ will put in it all files contained in directory myfolderforjar
+
+$ Note: It will put files in same filepath as in myfolderforjar
+$ within jar, directory structure is important
+
+$ -c: create jar
+$ -v: verbose output
+$ -f: specify the archive file name
+
+\end{lstlisting}
+
+\subsection{Extract files from jar}
+\begin{lstlisting}
+spyros@spyros-ubuntu-23:~$ jar -xvf jarname.jar
+$ Above command will extract all files from jar
+
+spyros@spyros-ubuntu-23:~$ jar -xvf jarname.jar file1.class file2.class
+$ Above command will extract only given files from jar
+
+$ -x: extract files
+
+\end{lstlisting}
+
+\subsection{Add/Update file in jar}
+\begin{lstlisting}
+spyros@spyros-ubuntu-23:~$ jar -uvf jarname.jar myfilesforjar
+$ Above command will create directories and add files that
+$ don't exist and will update existing files
+
+-u: update jar
+\end{lstlisting}
+
+\subsection{Delete file from jar}
+\begin{lstlisting}
+$ jar command doesn't have an option to delete file/directory from jar
+
+$ Method #1: Extract all files, delete required files from
+$ extracted files and create again the jar
+
+$ Method #2: As said jar files are built on zip format, so any zip
+$ program can be used to delete the file from the jar
+
+$ Example using the zip command
+spyros@spyros-ubuntu-23:~$ zip -d jarname.jar filetodelete.class
+$ Above command will delete filetodelete.class from jar jarname.jar
+
+$ -d: delete file/directory (used with zip command)
+
+\end{lstlisting}
+
+\subsection{Java Decompiler - JD-GUI}
+\paragraph{} One convenient way to view the content of a jar in a Graphical User Interface is jd-gui. For more on jd-gui please \href{https://java-decompiler.github.io/}{click here (JD-GUI Official Site)}.\\Note: JD-GUI allows you only to view jar contents, not to edit jar content in any way.
+
+
+\section{Popular Linux Distros}
+\begin{enumerate}
+	\item Ubuntu
+	\item Debian
+	\item OpenSuse
+	\item Fedora
+	\item ElementaryOS
+	\item Arch Linux
+	\item Gentoo
+\end{enumerate}
+
+
+\section{Pending Items}
+\begin{itemize}
+	\item sed, awk
+	\item vi, vim
+	\item nano, pico
+	\item exec \& execdir
+	\item Bash Script Programming
+	\item dos2unix
+\end{itemize}
+
+
+\end{document}
